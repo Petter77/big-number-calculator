@@ -1,21 +1,24 @@
 section .data
-num1 db "1"
-num1_arr times 2 db 0
-
-
+num1 db "12ABDE"
+num1_arr times 1 db 0
 
 section .text
     global  _start
 _start:
-    call check_char 
-    
+    call t_loop
   	jmp program_end      
+
+t_loop:
+    mov     edx,0
+    .loop:
+        mov     al, [num1+edx]
+        call check_char
+    inc edx
+    cmp edx, 3
+    jl  .loop
 
 
 check_char:
-    mov     al, [num1]
-
-
     mov     bl, 0x00
     cmp     al, '0'
     je      .found
@@ -95,17 +98,17 @@ check_char:
     jmp     .not_found
 
     .found:
-        mov  edx, 1
         test edx, 1      
         jz .even        
         jmp .not_even
         
-        .even:
-            mov     cl, bl
-            ret   
         .not_even:
-            shl     bl, 4
-            mov     cl,bl
+            add     ecx, ebx
+            mov     [num1_arr+edx], ecx
+            ret   
+        .even:
+            shl     ebx, 4
+            mov     ecx, ebx
             ret
         .not_found:
             ret
@@ -115,4 +118,4 @@ check_char:
 program_end:
     mov     ebx, 0              
     mov     eax, 1              
-    int     0x80                
+    int     0x80
