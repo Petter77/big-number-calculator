@@ -1,5 +1,5 @@
 section .data
-num1 db "12ABDE"
+num1 db "123456"
 num1_arr times 1 db 0
 
 section .text
@@ -14,9 +14,9 @@ t_loop:
         mov     al, [num1+edx]
         call check_char
     inc edx
-    cmp edx, 3
+    cmp edx, 6
     jl  .loop
-
+ret
 
 check_char:
     mov     bl, 0x00
